@@ -51,10 +51,6 @@ module.exports = (robot) ->
     (?:\s+(?:for|because|cause|cuz|as)\s+(.+))?
     $ # end of line
   ///i, (msg) ->
-
-    console.log 'fuck'
-    console.log msg
-
     # let's get our local vars in place
     [dummy, name, operator, reason] = msg.match
     from = msg.message.user.name.toLowerCase()
@@ -125,7 +121,7 @@ module.exports = (robot) ->
                   else
                     "#{name} has #{score} points"
 
-      if reasonScore?
+      if reasonScore is 1 or reasonScore is -1
         msg.send message
       else
         reaction msg, 'belly'
