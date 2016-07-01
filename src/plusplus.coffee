@@ -76,21 +76,8 @@ module.exports = (robot) ->
             else
               scoreKeeper.subtract(name, from, room, reason)
 
-    reaction = (msg, name) ->
-      console.log 'reaction', msg
-
-      payload = {}
-      payload.name = name
-      payload.timestamp = msg.message.rawMessage.ts
-      payload.channel  = msg.message.rawMessage.channel
-      payload.token = process.env.HUBOT_SLACK_TOKEN
-
-      reqbody = JSON.stringify(payload)
-
-      robot.http("https://slack.com/api/reactions.add?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
-        .get() (err, res, body) ->
-          return if res.statusCode == 200
-          robot.logger.error "Error!", res.statusCode, body
+    console.log 'fuck'
+    console.log msg
 
     # if we got a score, then display all the things and fire off events!
     if score?
@@ -99,9 +86,16 @@ module.exports = (robot) ->
                     "#{name} has #{score} points, #{reasonScore} of which is for #{reason}."
                   else
                     "#{name} has #{score} points, #{reasonScore} of which are for #{reason}."
+                else
+                  if score == 1
+                    "#{name} has #{score} point"
+                  else
+                    "#{name} has #{score} points"
+
 
       console.log msg
-      reaction msg, 'thumbsup'
+      console.log message
+      msg.send message
 
       robot.emit "plus-one", {
         name:      name
