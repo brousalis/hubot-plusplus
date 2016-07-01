@@ -27,6 +27,7 @@
 #   ajacksified
 
 q = require('q')
+axios = require('axios')
 _ = require('underscore')
 clark = require('clark')
 querystring = require('querystring')
@@ -84,15 +85,10 @@ module.exports = (robot) ->
       payload.channel  = msg.message.rawMessage.channel
       payload.token = process.env.HUBOT_SLACK_TOKEN
 
-      reqbody = JSON.stringify(payload)
-
-      robot.http("https://slack.com/api/reactions.add?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
-        .get() (err, res, body) ->
-          if res.statusCode == 200
-            defer.resolve res
-            return
-
-          robot.logger.error "Error!", res.statusCode, body
+      axios.get("https://slack.com/api/reactions.add?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
+        .then (res) ->
+          defer.resolve res
+        .catch (err) ->
           defer.reject error
 
       defer.promise
