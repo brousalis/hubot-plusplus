@@ -37,25 +37,6 @@ module.exports = (robot) ->
   scoreKeyword   = process.env.HUBOT_PLUSPLUS_KEYWORD or 'score'
   reasonsKeyword = process.env.HUBOT_PLUSPLUS_REASONS or 'raisins'
 
-  options =
-    endpoint: "https://slack.com/api/reactions.add"
-
-  reaction = (msg, name) ->
-    console.log 'reaction', msg
-
-    payload = {}
-    payload.name = name
-    payload.timestamp = msg.message.rawMessage.ts
-    payload.channel  = msg.message.rawMessage.channel
-    payload.token = process.env.HUBOT_SLACK_TOKEN
-
-    reqbody = JSON.stringify(payload)
-
-    robot.http(options.endpoint + "?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
-      .get() (err, res, body) ->
-        return if res.statusCode == 200
-        robot.logger.error "Error!", res.statusCode, body
-
   # sweet regex bro
   robot.hear ///
     # from beginning of line
@@ -95,6 +76,22 @@ module.exports = (robot) ->
             else
               scoreKeeper.subtract(name, from, room, reason)
 
+    reaction = (msg, name) ->
+      console.log 'reaction', msg
+
+      payload = {}
+      payload.name = name
+      payload.timestamp = msg.message.rawMessage.ts
+      payload.channel  = msg.message.rawMessage.channel
+      payload.token = process.env.HUBOT_SLACK_TOKEN
+
+      reqbody = JSON.stringify(payload)
+
+      robot.http("https://slack.com/api/reactions.add?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
+        .get() (err, res, body) ->
+          return if res.statusCode == 200
+          robot.logger.error "Error!", res.statusCode, body
+
     # if we got a score, then display all the things and fire off events!
     if score?
       message = if reason?
@@ -107,7 +104,7 @@ module.exports = (robot) ->
         msg.send message
       else
         msg.send 'lol'
-        # reaction msg, 'thumbsup'
+        reaction msg, 'thumbsup'
 
       robot.emit "plus-one", {
         name:      name
