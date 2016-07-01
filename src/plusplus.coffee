@@ -41,6 +41,8 @@ module.exports = (robot) ->
     endpoint: "https://slack.com/api/reactions.add"
 
   reaction = (msg, name) ->
+    console.log 'reaction', msg
+
     payload = {}
     payload.name = name
     payload.timestamp = msg.message.rawMessage.ts
@@ -104,6 +106,7 @@ module.exports = (robot) ->
       if reasonScore?
         msg.send message
       else
+        msg.send 'lol'
         reaction msg, 'thumbsup'
 
       robot.emit "plus-one", {
