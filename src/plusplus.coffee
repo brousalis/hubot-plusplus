@@ -26,7 +26,7 @@
 # Author:
 #   ajacksified
 
-
+q = require('q')
 _ = require('underscore')
 clark = require('clark')
 querystring = require('querystring')
@@ -77,6 +77,7 @@ module.exports = (robot) ->
               scoreKeeper.subtract(name, from, room, reason)
 
     reaction = (msg, name) ->
+      defer = q.defer()
       console.log 'reaction', name
 
       payload = {}
@@ -89,8 +90,14 @@ module.exports = (robot) ->
 
       robot.http("https://slack.com/api/reactions.add?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
         .get() (err, res, body) ->
-          return if res.statusCode == 200
+          if res.statusCode == 200
+            defer.resolve res
+            return
+
           robot.logger.error "Error!", res.statusCode, body
+          defer.reject error
+
+      defer.promise
 
     convertEmoji = (score) ->
       s = score.toString().split('')
@@ -127,8 +134,12 @@ module.exports = (robot) ->
         reaction msg, 'belly'
         console.log 'convert', convertEmoji score
         emojis = convertEmoji score
+        promises = []
+
         _.each emojis, (name) ->
-          reaction msg, name
+          promises.push reaction msg, name
+
+        q.all(promises)
 
       robot.emit "plus-one", {
         name:      name

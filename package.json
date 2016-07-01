@@ -22,9 +22,10 @@
     "url": "https://github.com/ajacksified/hubot-plusplus/issues"
   },
   "dependencies": {
+    "clark": "0.0.6",
     "coffee-script": "~1.6",
-    "underscore": ">= 1.0",
-    "clark": "0.0.6"
+    "q": "^1.4.1",
+    "underscore": ">= 1.0"
   },
   "devDependencies": {
     "mocha": "*",
