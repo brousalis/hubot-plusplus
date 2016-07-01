@@ -100,11 +100,8 @@ module.exports = (robot) ->
                   else
                     "#{name} has #{score} points, #{reasonScore} of which are for #{reason}."
 
-      if reasonScore?
-        msg.send message
-      else
-        msg.send 'lol'
-        reaction msg, 'thumbsup'
+      console.log msg
+      reaction msg, 'thumbsup'
 
       robot.emit "plus-one", {
         name:      name
