@@ -107,7 +107,7 @@ module.exports = (robot) ->
         msg.send message
       else
         msg.send 'lol'
-        reaction msg, 'thumbsup'
+        # reaction msg, 'thumbsup'
 
       robot.emit "plus-one", {
         name:      name
