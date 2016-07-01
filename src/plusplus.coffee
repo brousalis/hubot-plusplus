@@ -140,7 +140,7 @@ module.exports = (robot) ->
         promises.forEach (f) ->
           setTimeout ->
             result = result.then(f)
-          , 100
+          , 5000
 
       robot.emit "plus-one", {
         name:      name
