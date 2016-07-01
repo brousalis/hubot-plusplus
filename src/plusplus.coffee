@@ -137,12 +137,10 @@ module.exports = (robot) ->
 
         result = reaction msg, 'belly'
 
-        result.then ->
-          console.log 'done belly'
-          promises[0].then ->
-            console.log 'done 0'
-            promises[1].then ->
-              console.log 'done 1'
+        promises.forEach (f) ->
+          setTimeout ->
+            result = result.then(f)
+          , 100
 
       robot.emit "plus-one", {
         name:      name
