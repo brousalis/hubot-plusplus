@@ -1,10 +1,12 @@
-hubot-plusplus
+hubot-plusplus-reactions
 ==============
 
 Give (or take away) points from people and things, all from the comfort of your
 personal Hubot.
 
 Note: don't make changes here; make changes to [the official repository](https://github.com/hubot-scripts/hubot-plusplus) instead.
+
+This fork of `hubot-plusplus` changes hubot's response message to reaction based instead. Using the :one::two::three: emojis. Less spam in chat.
 
 API
 ---
@@ -34,7 +36,7 @@ robot.emit "plus-one", {
 
 ## Installation
 
-Run the following command 
+Run the following command
 
     $ npm install hubot-plusplus
 

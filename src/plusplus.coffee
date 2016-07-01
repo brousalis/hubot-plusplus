@@ -37,6 +37,23 @@ module.exports = (robot) ->
   scoreKeyword   = process.env.HUBOT_PLUSPLUS_KEYWORD or 'score'
   reasonsKeyword = process.env.HUBOT_PLUSPLUS_REASONS or 'raisins'
 
+  options =
+    endpoint: "https://slack.com/api/reactions.add"
+
+  reaction = (msg) ->
+    payload = {}
+    payload.name = msg.name
+    payload.timestamp = msg.message.rawMessage.ts
+    payload.channel  = msg.message.rawMessage.channel
+    payload.token = process.env.HUBOT_SLACK_TOKEN
+
+    reqbody = JSON.stringify(payload)
+
+    robot.http(options.endpoint + "?token=" + payload.token + "&name=" + payload.name + "&timestamp=" + payload.timestamp + "&channel=" + payload.channel)
+      .get() (err, res, body) ->
+        return if res.statusCode == 200
+        robot.logger.error "Error!", res.statusCode, body
+
   # sweet regex bro
   robot.hear ///
     # from beginning of line
