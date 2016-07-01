@@ -78,8 +78,6 @@ module.exports = (robot) ->
 
     reaction = (msg, name) ->
       defer = q.defer()
-      console.log 'reaction', name
-
       payload = {}
       payload.name = name
       payload.timestamp = msg.message.rawMessage.ts
@@ -131,16 +129,18 @@ module.exports = (robot) ->
       if reasonScore is 1 or reasonScore is -1
         msg.send message
       else
-        emojis = convertEmoji score
-
         promises = []
 
+        emojis = convertEmoji score
         _.each emojis, (name) ->
           promises.push reaction msg, name
 
         result = reaction msg, 'belly'
 
+        console.log promises
+
         promises.forEach (f) ->
+          console.log f
           result = result.then(f)
 
       robot.emit "plus-one", {
@@ -194,8 +194,6 @@ module.exports = (robot) ->
         name = (name.replace /(^\s*@)|([,\s]*$)/g, '')
       else
         name = (name.replace /(^\s*@)|([,:\s]*$)/g, '')
-
-    console.log(name)
 
     score = scoreKeeper.scoreForUser(name)
     reasons = scoreKeeper.reasonsForUser(name)
