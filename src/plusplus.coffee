@@ -77,7 +77,7 @@ module.exports = (robot) ->
               scoreKeeper.subtract(name, from, room, reason)
 
     reaction = (msg, name) ->
-      console.log 'reaction', msg
+      console.log 'reaction', name
 
       payload = {}
       payload.name = name
@@ -105,8 +105,8 @@ module.exports = (robot) ->
         '7': 'seven'
         '8': 'eight'
         '9': 'nine'
-      _.map s, (c) ->
-        map[c]
+      return _.map s, (c) ->
+        return map[c]
 
     # if we got a score, then display all the things and fire off events!
     if score?
@@ -125,6 +125,7 @@ module.exports = (robot) ->
         msg.send message
       else
         reaction msg, 'belly'
+        console.log 'convert', convertToEmoji score
         _.each convertToEmoji score, (name) ->
           reaction msg, name
 
