@@ -126,7 +126,8 @@ module.exports = (robot) ->
       else
         reaction msg, 'belly'
         console.log 'convert', convertEmoji score
-        _.each convertEmoji score, (name) ->
+        emojis = convertEmoji score
+        _.each emojis, (name) ->
           reaction msg, name
 
       robot.emit "plus-one", {
