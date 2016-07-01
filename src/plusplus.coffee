@@ -51,6 +51,10 @@ module.exports = (robot) ->
     (?:\s+(?:for|because|cause|cuz|as)\s+(.+))?
     $ # end of line
   ///i, (msg) ->
+
+    console.log 'fuck'
+    console.log msg
+
     # let's get our local vars in place
     [dummy, name, operator, reason] = msg.match
     from = msg.message.user.name.toLowerCase()
@@ -76,8 +80,6 @@ module.exports = (robot) ->
             else
               scoreKeeper.subtract(name, from, room, reason)
 
-    console.log 'fuck'
-    console.log msg
 
     # if we got a score, then display all the things and fire off events!
     if score?
