@@ -40,9 +40,9 @@ module.exports = (robot) ->
   options =
     endpoint: "https://slack.com/api/reactions.add"
 
-  reaction = (msg) ->
+  reaction = (msg, name) ->
     payload = {}
-    payload.name = msg.name
+    payload.name = name
     payload.timestamp = msg.message.rawMessage.ts
     payload.channel  = msg.message.rawMessage.channel
     payload.token = process.env.HUBOT_SLACK_TOKEN
@@ -100,14 +100,11 @@ module.exports = (robot) ->
                     "#{name} has #{score} points, #{reasonScore} of which is for #{reason}."
                   else
                     "#{name} has #{score} points, #{reasonScore} of which are for #{reason}."
-                else
-                  if score == 1
-                    "#{name} has #{score} point"
-                  else
-                    "#{name} has #{score} points"
 
-
-      msg.send message
+      if reasonScore?
+        msg.send message
+      else
+        reaction msg, 'thumbsup'
 
       robot.emit "plus-one", {
         name:      name

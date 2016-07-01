@@ -8,6 +8,11 @@ Note: don't make changes here; make changes to [the official repository](https:/
 
 This fork of `hubot-plusplus` changes hubot's response message to reaction based instead. Using the :one::two::three: emojis. Less spam in chat.
 
+
+#### Important
+
+Make sure to set `HUBOT_SLACK_TOKEN` ENV variable.
+
 API
 ---
 
