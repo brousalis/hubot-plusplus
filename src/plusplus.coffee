@@ -92,22 +92,6 @@ module.exports = (robot) ->
           return if res.statusCode == 200
           robot.logger.error "Error!", res.statusCode, body
 
-    convertEmoji = (score) ->
-      s = score.split('')
-      map =
-        '0': 'zero'
-        '1': 'one'
-        '2': 'two'
-        '3': 'three'
-        '4': 'four'
-        '5': 'five'
-        '6': 'six'
-        '7': 'seven'
-        '8': 'eight'
-        '9': 'nine'
-      return _.map s, (c) ->
-        return map[c]
-
     # if we got a score, then display all the things and fire off events!
     if score?
       message = if reason?
@@ -125,9 +109,23 @@ module.exports = (robot) ->
         msg.send message
       else
         reaction msg, 'belly'
-        console.log score, reasonScore
-        console.log 'convert', convertEmoji score
-        _.each convertEmoji score, (name) ->
+        s = score.split('')
+        m =
+          '0': 'zero'
+          '1': 'one'
+          '2': 'two'
+          '3': 'three'
+          '4': 'four'
+          '5': 'five'
+          '6': 'six'
+          '7': 'seven'
+          '8': 'eight'
+          '9': 'nine'
+        a = _.map s, (c) ->
+          return m[c]
+        console.log a
+        _.each a, (name) ->
+          console.log name
           reaction msg, name
 
       robot.emit "plus-one", {
