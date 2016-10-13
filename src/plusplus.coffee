@@ -132,6 +132,8 @@ module.exports = (robot) ->
           reaction(msg, name).then ->
             if emojis.length? then postReaction()
 
+        postReaction()
+
       robot.emit "plus-one", {
         name:      name
         direction: operator
