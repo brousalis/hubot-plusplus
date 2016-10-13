@@ -125,18 +125,12 @@ module.exports = (robot) ->
       if reasonScore is 1 or reasonScore is -1
         msg.send message
       else
-        promises = []
+        emojis = convertEmoji(score)
 
-        emojis = convertEmoji score
-        _.each emojis, (name) ->
-          promises.push reaction msg, name
-
-        result = reaction msg, 'belly'
-
-        promises.forEach (f) ->
-          setTimeout ->
-            result = result.then(f)
-          , 5000
+        postReaction = ->
+          name = emojis.shift()
+          reaction(msg, name).then ->
+            if emojis.length? then postReaction()
 
       robot.emit "plus-one", {
         name:      name
